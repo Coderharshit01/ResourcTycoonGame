@@ -1,0 +1,13 @@
+@keyframes sudden-glow {
+    0%, 70%, 100% {
+      text-shadow: 2px 4px 8px rgba(125,10,225,0.8);
+    }
+    80%, 90% {
+      text-shadow: 0 0 8px #7c3aed, 0 0 16px #7c3aed, 0 0 24px #7c3aed;
+    }
+  }
+  
+  .glow-text {
+    animation: sudden-glow 1s infinite;
+  }
+  
