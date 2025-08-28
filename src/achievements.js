@@ -81,7 +81,7 @@
       id: 11,
       title: "Collector",
       desc: "Unlock 10 achievements",
-      requirement: (state) => state.unlockedAchievements?.length >= 10,
+      requirement: (state) => state.achievements.filter(a => a.unlocked).length >= 10,
       unlocked: false,
     },
   ];

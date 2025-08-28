@@ -20,10 +20,9 @@ export default function App() {
       return { ...a, unlocked: saved?.unlocked || false };
     });
   });
-  const unlockedAchievements = useMemo(()=>
-  achievements.filter((a)=>a.unlocked).length , 
-  [achievements]
-  )
+
+
+
   const [popup, setPopup] = useState(null)
   const [coins, setCoins] = useState(() => {
     const Data = localStorage.getItem("RTD")
@@ -48,8 +47,9 @@ export default function App() {
       airpot: { income: 100000, cost: 1000000 }
     }
   })
+
   useEffect(() => {
-    const state = { coins, empire, income , unlockedAchievements };
+    const state = { coins, empire, income , achievements };
     setachievements(prev =>
       prev.map((a) => {
         if (!a.unlocked && a.requirement(state)) {
@@ -58,7 +58,7 @@ export default function App() {
         }
         return a;
       }))
-  }, [coins, empire, income , unlockedAchievements])
+  }, [coins, empire, income])
 
   useEffect(() => {
     const ResourceTycoonData = {
