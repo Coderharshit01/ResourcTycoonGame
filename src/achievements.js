@@ -1,0 +1,88 @@
+ export const achievementlist = [
+    {
+      id: 1,
+      title: "First Coin",
+      desc: "Earn your very first coin 💰",
+      requirement: (state) => state.coins >= 1,
+      unlocked: false,
+    },
+    {
+      id: 2,
+      title: "Pocket Change",
+      desc: "Collect 300 coins",
+      requirement: (state) => state.coins >= 300,
+      unlocked: false,
+    },
+    {
+      id: 3,
+      title: "Steady Income",
+      desc: "Reach an income of 10 coins/sec",
+      requirement: (state) => state.income >= 10,
+      unlocked: false,
+    },
+    {
+      id: 4,
+      title: "Farmer",
+      desc: "Build your first farm 🌾",
+      requirement: (state) => state.empire?.farm >= 1,
+      unlocked: false,
+    },
+    {
+      id: 5,
+      title: "Landlord",
+      desc: "Own 10 farms",
+      requirement: (state) => state.empire?.farm >= 10,
+      unlocked: false,
+    },
+    {
+      id: 6,
+      title: "Pirate",
+      desc: "Build your first Ship ⛏️",
+      requirement: (state) => state.empire?.ship >= 1,
+      unlocked: false,
+    },
+    {
+      id: 7,
+      title: "Tycoon",
+      desc: "Own 6 different types of buildings",
+      requirement: (state) =>
+        Object.values(state.empire).filter((b) => b > 0).length >= 6,
+      unlocked: false,
+    },
+    {
+      id: 8,
+      title: "Millionaire",
+      desc: "Accumulate 1,000,000 coins 💎",
+      requirement: (state) => state.coins >= 1000000,
+      unlocked: false,
+    },
+    // {
+    //   id: 9,
+    //   title: "The Grind Never Stops",
+    //   desc: "Play for 1 hour total ⏳",
+    //   requirement: (state) => state.playTime >= 3600, // seconds
+    //   unlocked: false,
+    // },
+    {
+        id: 9,
+        title: "Polluter",
+        desc: "Build 10 factories",
+        requirement: (state) => state.empire?.Factory >=10,
+        unlocked: false,
+      },
+      {
+        id: 10,
+        title: "AeroConquerer",
+        desc: "Build 2 airpots",
+        requirement: (state) => state.empire?.airpot >=2,
+        unlocked: false,
+      },
+    {
+      id: 11,
+      title: "Collector",
+      desc: "Unlock 10 achievements",
+      requirement: (state) => state.unlockedAchievements?.length >= 10,
+      unlocked: false,
+    },
+  ];
+  
