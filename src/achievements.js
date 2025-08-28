@@ -44,9 +44,9 @@
     {
       id: 7,
       title: "Tycoon",
-      desc: "Own 6 different types of buildings",
+      desc: "Own 5 different types of buildings",
       requirement: (state) =>
-        Object.values(state.empire).filter((b) => b > 0).length >= 6,
+        Object.values(state.empire).filter((b) => b > 0).length >= 5,
       unlocked: false,
     },
     {
