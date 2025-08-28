@@ -249,7 +249,7 @@ console.log(unlockedAchievements)
           exit={{ opacity: 0.5, scale: 0.8 }}
           transition={{ ease: "easeIn", duration: 0.5 }}
           >
-            <h1 className="text-green-500 drop-shadow-[0px_3px_10px_rgba(0,250,0,1)] text-xl bg-transparent text-transparent">New Achievement !!</h1>
+            <h1 className="text-green-500 drop-shadow-[0px_3px_10px_rgba(0,250,0,1)] text-xl bg-transparent">New Achievement !!</h1>
           <X className="absolute top-2 right-2 w-8 h-6 cursor-pointer" onClick={()=> setPopup(null)}/>
        
            <div className="flex flex-col gap-4 items-center justify-center p-6">
