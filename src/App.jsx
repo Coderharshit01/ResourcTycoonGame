@@ -48,9 +48,6 @@ export default function App() {
       airpot: { income: 100000, cost: 1000000 }
     }
   })
-useEffect(()=>{
-console.log(unlockedAchievements)
-},[coins])
   useEffect(() => {
     const state = { coins, empire, income , unlockedAchievements };
     setachievements(prev =>
