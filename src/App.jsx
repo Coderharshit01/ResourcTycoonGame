@@ -7,7 +7,13 @@ export default function App() {
  
   const [achievements, setachievements] = useState(() => {
     const savedData = localStorage.getItem("RTD");
-    const savedAchievements = savedData ? JSON.parse(savedData).achievements : [];
+    let savedAchievements = [];
+  try {
+    const parsed = savedData ? JSON.parse(savedData) : null;
+    savedAchievements = parsed?.achievements || [];
+  } catch (err) {
+    console.error("Invalid localStorage data, resetting achievements", err);
+  }
   
     return achievementlist.map(a => {
       const saved = savedAchievements.find(s => s.id === a.id);
