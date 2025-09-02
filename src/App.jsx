@@ -1,10 +1,23 @@
 import { useMemo, useState, useEffect } from "react";
-import { Coins, Factory, Store, Leaf, Ship, Plane, X } from "lucide-react";
+import { Coins, Factory, Store, Leaf, Ship, Plane, X ,Diamond} from "lucide-react";
 import { achievementlist } from "./achievements";
 import {  motion } from "framer-motion";
 
 export default function App() {
  
+
+  const defaultEmpire = { farm: 0, shop: 0, casino: 0, Factory: 0, ship: 0, airpot: 0 };
+
+  const defaultData = {
+    farm: { income: 5, cost: 50 },
+    Factory: { income: 20, cost: 200 },
+    shop: { income: 100, cost: 1000 },
+    casino: { income: 1000, cost: 10000 },
+    ship: { income: 10000, cost: 100000 },
+    airpot: { income: 100000, cost: 1000000 }
+  };
+  
+
   const [achievements, setachievements] = useState(() => {
     const savedData = localStorage.getItem("RTD");
     let savedAchievements = [];
@@ -22,7 +35,6 @@ export default function App() {
   });
 
 
-
   const [popup, setPopup] = useState(null)
   const [coins, setCoins] = useState(() => {
     const Data = localStorage.getItem("RTD")
@@ -31,7 +43,8 @@ export default function App() {
 
   const [empire, setEmpire] = useState(() => {
     const Data = localStorage.getItem("RTD")
-    return Data ? JSON.parse(Data).empire : { farm: 0, shop: 0, Factory: 0, ship: 0, airpot: 0 };
+   const savedEmpire = Data ? JSON.parse(Data).empire : {};
+   return {...defaultEmpire,...savedEmpire}
   })
   const [income, setIncome] = useState(() => {
     const Data = localStorage.getItem("RTD")
@@ -39,26 +52,23 @@ export default function App() {
   })
   const [data, setData] = useState(() => {
     const Data = localStorage.getItem("RTD");
-    return Data ? JSON.parse(Data).data : {
-      farm: { income: 5, cost: 50 },
-      Factory: { income: 20, cost: 200 },
-      shop: { income: 100, cost: 1000 },
-      ship: { income: 10000, cost: 100000 },
-      airpot: { income: 100000, cost: 1000000 }
-    }
+    const savedData =  Data ? JSON.parse(Data).data : {};
+    return {...defaultData,...savedData}
   })
 
   useEffect(() => {
-    const state = { coins, empire, income , achievements };
     setachievements(prev =>
       prev.map((a) => {
+        const state = { coins, empire, income, achievements: prev }; // use latest prev
         if (!a.unlocked && a.requirement(state)) {
-          setPopup(a)
-          return { ...a, unlocked: true }
+          setPopup(a);
+          return { ...a, unlocked: true };
         }
         return a;
-      }))
-  }, [coins, empire, income])
+      })
+    );
+  }, [coins, empire, income]);
+  
 
   useEffect(() => {
     const ResourceTycoonData = {
@@ -119,12 +129,12 @@ export default function App() {
         <div className="flex items-center  gap-3">
           <Coins className="text-green-400" size={32} />
           <h2 className="text-3xl font-extrabold text-green-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]">
-            {coins}
+            {formatNumber(coins)}
           </h2>
         </div>
         <div className="flex items-center gap-3">
           <h2 className="text-xl italic font-semibold text-yellow-400">
-            +{income} / sec
+            +{formatNumber(income)} / sec
           </h2>
         </div>
       </div>
@@ -139,14 +149,8 @@ export default function App() {
         shadow-2xl w-24 h-10 rounded-xl text-center p-1 text-white" onClick={() => {
               setCoins(100)
               setIncome(0)
-              setEmpire({ farm: 0, shop: 0, Factory: 0, ship: 0, airpot: 0 })
-              setData({
-                farm: { income: 5, cost: 50 },
-                Factory: { income: 20, cost: 200 },
-                shop: { income: 100, cost: 1000 },
-                ship: { income: 10000, cost: 100000 },
-                airpot: { income: 100000, cost: 1000000 }
-              })
+              setEmpire(defaultEmpire)
+              setData(defaultData)
               setachievements(achievementlist)
             }}>Reset all</button>
         </div>
@@ -155,7 +159,7 @@ export default function App() {
         <div className="space-y-3">
           <div className="bg-gray-700 flex justify-between items-center p-3 rounded-xl hover:scale-105 hover:shadow-[0_0_12px_#22c55e] transition">
             <span className="flex items-center gap-2">
-              <Leaf className="text-green-400" /> Farm — Cost: {data.farm.cost} — +5/sec
+              <Leaf className="text-green-400" /> Farm — Cost: {formatNumber(data.farm.cost)} — +5/sec
             </span>
             <button className={` ${coins < data.farm.cost ? "bg-gray-600 opacity-80 cursor-not-allowed" : "bg-green-500 hover:bg-green-600 cursor-pointer"} px-4 py-1 rounded-lg font-bold`}
               onClick={() => handlePurchase("farm")} disabled={coins < data.farm.cost} >
@@ -165,7 +169,7 @@ export default function App() {
 
           <div className="bg-gray-700 flex justify-between items-center p-3 rounded-xl hover:scale-105 hover:shadow-[0_0_12px_#3b82f6] transition">
             <span className="flex items-center gap-2">
-              <Factory className="text-blue-400" /> Factory — Cost: {data.Factory.cost} — +20/sec
+              <Factory className="text-blue-400" /> Factory — Cost: {formatNumber(data.Factory.cost)} — +20/sec
             </span>
             <button className={` ${coins < data.Factory.cost ? "bg-gray-600 cursor-not-allowed opacity-80" : "bg-blue-500 hover:bg-blue-600 cursor-pointer"} px-4 py-1 rounded-lg font-bold`}
               onClick={() => handlePurchase("Factory")} disabled={coins < data.Factory.cost}>
@@ -176,7 +180,7 @@ export default function App() {
           <div className="bg-gray-700 flex justify-between items-center p-3 
           rounded-xl hover:scale-105 hover:shadow-[0px_0px_14px_rgba(220,247,0,0.8)] duration-75 ">
             <span className="flex items-center gap-2">
-              <Store className="text-yellow-400" /> Shop — Cost: {data.shop.cost} — +100/sec
+              <Store className="text-yellow-400" /> Shop — Cost: {formatNumber(data.shop.cost)} — +100/sec
             </span>
             <button
 
@@ -186,6 +190,22 @@ export default function App() {
                rounded-lg font-bold `}
               onClick={() => handlePurchase("shop")}
               disabled={coins < data.shop.cost}>
+              Buy
+            </button>
+          </div>
+          <div className="bg-gray-700 flex justify-between items-center p-3 
+          rounded-xl hover:scale-105 hover:shadow-[0px_0px_14px_rgba(220,0,110,0.8)] duration-75 ">
+            <span className="flex items-center gap-2">
+              <Diamond className="text-pink-400" /> Casino — Cost: {formatNumber(data.casino.cost)} — +{data.casino.income}/sec
+            </span>
+            <button
+
+              className={` px-4 py-1 transition-all 
+               ${coins < data.casino.cost ? "bg-gray-600 opacity-80 cursor-not-allowed" : 
+               "bg-pink-600 duration-75 hover:bg-pink-700 cursor-pointer "}
+               rounded-lg font-bold `}
+              onClick={() => handlePurchase("casino")}
+              disabled={coins < data.casino.cost}>
               Buy
             </button>
           </div>
@@ -229,6 +249,7 @@ export default function App() {
           <li className="bg-gray-700 p-3 rounded-xl">🌾 Farms: {empire.farm} (+{empire.farm * 5}/sec)</li>
           <li className="bg-gray-700 p-3 rounded-xl">🏭 Factories: {empire.Factory} (+{empire.Factory * 20}/sec)</li>
           <li className="bg-gray-700 p-3 rounded-xl">🏬 Shops: {empire.shop} (+{empire.shop * 100}/sec) </li>
+          <li className="bg-gray-700 p-3 rounded-xl"> 🂡  Casino: {empire.casino} (+{empire.casino * 1000}/sec) </li>
           <li className="bg-gray-700 p-3 rounded-xl">🚢 Ship: {empire.ship} (+ {empire.ship * 10000}/sec)</li>
           <li className="bg-gray-700 p-3 rounded-xl">✈️ Airpot: {empire.airpot} (+ {empire.airpot * 1000000}/sec) </li>
 

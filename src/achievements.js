@@ -77,11 +77,18 @@
         requirement: (state) => state.empire?.airpot >=2,
         unlocked: false,
       },
+      {
+        id: 11,
+        title: "Gambler",
+        desc: "Build 3 casino's",
+        requirement: (state) => state.empire?.casino >=3,
+        unlocked: false,
+      },
     {
-      id: 11,
+      id: 12,
       title: "Collector",
-      desc: "Unlock 10 achievements",
-      requirement: (state) => state.achievements.filter(a => a.unlocked).length >= 10,
+      desc: "Unlock 11 achievements",
+      requirement: (state) => state.achievements.filter(a => a.unlocked).length >= 11,
       unlocked: false,
     },
   ];
